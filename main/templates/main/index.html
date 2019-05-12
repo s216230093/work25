@@ -1,0 +1,309 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{# 장고에서 css, img를 사용하기 위해 사용하는 코드. prj/settings.py에서 별도의 코드 수정이 필요 #}
+
+{% block title %}
+    hytrip
+{% endblock %}
+
+{% block content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="static/main/css/carousel.css">
+
+{#    <!-- navbar-->#}
+{#    <nav class="navbar navbar-light navbar-expand-lg fixed-top shadow-sm bg-light">#}
+{#      <a href="index.html" class="navbar-brand">#}
+{#        <img src="static/main/iconfinder_airplane_2.png" alt="logo image" width="30px"> HYTRIP#}
+{#      </a>#}
+{#      <button type="button"#}
+{#              data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#              aria-controls="navbarSupportedContent" aria-expanded="false"#}
+{#              aria-label="Toggle navigation" class="navbar-toggler">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#      </button>#}
+{#      <div id="navbarSupportedContent" class="collapse navbar-collapse">#}
+{#        <ul class="navbar-nav ml-auto">#}
+{#          <li class="nav-item"><a href="/blog/" class="nav-link">블로그</a></li>#}
+{#          <li class="nav-item"><a href="/shop/" class="nav-link">샵</a></li>#}
+{#          <li class="nav-item"><a href="/accounts/{{ accounts.name }}" class="nav-link">둘러보기</a></li>#}
+{#        </ul>#}
+{#        <div class="navbar-text ml-lg-3">#}
+{#          <a href="/accounts/signup" class="btn btn-primary text-white shadow">회원가입</a>#}
+{#        </div>#}
+{#        <div class="navbar-text ml-lg-3">#}
+{#          <a href="/accounts/login" class="btn btn-info text-white shadow">로그인</a>#}
+{#        </div>#}
+{#      </div>#}
+{#    </nav>#}
+
+    <section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-dark img-fulid" style="height:100vh; background-size: cover; background-image: url(static/main/simon_unsplash.jpg);" >
+       <div class="container-fluid">
+          <div class="row  justify-content-center align-items-center d-flex text-center h-100">
+            <div class="col-12 col-md-8 h-50 ">
+                <h1 class="display-2  text-light mb-2 mt-5 text-dark"><strong>Welcome to HYtrip</strong> </h1>
+                  <p class="lead  text-light mb-5 text-dark"><b>버튼을 누르고 게시물을 등록해보세요.</b></p>
+                  <p><a id="btn" href="http://127.0.0.1:8000/admin/" class="btn bg-primary btn-round text-light btn-lg btn-rised">Click and Start! ></a></p>
+
+                <div id="targets"class="btn-container-wrapper p-relative d-block  zindex-1">
+                    <a class="btn btn-link btn-lg   mt-md-3 mb-4 scroll align-self-center text-light" href="#target" >
+                        <i class="fa fa-angle-down fa-4x text-light" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section class="bg-light postsec" id="target">
+{#    부트스트랩 -> 12칼럼이 기본. .col-키워드 다음에 화면 종류를 나타내는 키워드와, 하나의 영역으로 묶을 칼럼 개수를 #}
+{#    숫자로 표시해서 하나의 클래스 스타일을 만듬.#}
+        <div class="container">
+            <div class="row">
+{#                큰 화면(데스크톱)에서는 6칼럼씩 2개의 영역으로. order은 lg적용이 두번째로 적용된다는 뜻. #}
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <img src="static/main/margo-bro.jpg" alt="게시글 아이콘" class="img-fluid">
+                </div>
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <h3>최근 게시글 3개</h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <th>id</th>
+                            <th>게시자</th>
+                            <th>제목</th>
+                            <th>간략 내용</th>
+                            <th>작성 일시</th>
+                        </thead>
+                        <tbody>
+                        {% for post in post_list %}
+                            <tr>
+                                <td>{{ post.id }}</td>
+                                <td>{{ post.author }}</td>
+                                <td>{{ post.title }}</td>
+                                <td>{{ post.short_content }}</td>
+                                <td>{{ post.post_created }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Card item-->
+    <section class="bg-light">
+      <div class="container">
+        <h3>최고가 상품 3개</h3>
+        <p class="lead text-muted mb-5">최신 여행 상품을 만나보세요. 봄바람에 떨리는 가슴.</p>
+        <div class="row">
+        {% for item in item_list %}
+          <div class="col-md-4 mb-4">
+            <div class="card shadow border-0 h-100"><a href="#">
+                {% if item.photo %}<img src="{{ item.photo.url }}" alt="" class="card-img-top"/>{% endif %}</a>
+              <div class="card-body">
+                <h5> <a href="shop/item_detail.html" class="text-dark">{{ item.name }}</a></h5>
+                <p class="text-muted card-text">{{ item.desc.strip }}</p>
+                <p class="card-text"><a href="#">더 읽기</a></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Card item_only image-->
+    <section class="bg-light">
+      <div class="container">
+        <h3>최고가 상품 3개</h3>
+        <p class="lead text-muted mb-5">최고가 상품을 만나보세요. 새로움에 떨리는 가슴.</p>
+        <div class="row">
+        {% for item in item_list %}
+          <div class="col-md-4 mb-4 mx-auto">
+            <div class="hovereffect">
+                {% if item.photo %}<img src="{{ item.photo.url }}" alt="" class="img-responsive"/>{% endif %}
+              <div class="overlay">
+                <h2> <a href="shop/item_detail.html">{{ item.name }}</a></h2>
+                    <p><a href="#">{{ item.desc.strip }}</a></p>
+                    <p><a href="#">더 읽기</a></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+{#        <!-- 회전목마 item_fail-->#}
+{#    <div class="top-slide">#}
+{#        <section class="carousel slide" id="itemsCarousel">#}
+{#            <ol class="carousel-indicators">#}
+{#                <li data-target="#itemsCarousel" data-slide-to="0" {% if forloop.first %} class="active"{% endif %}></li>#}
+{#                <li data-target="#itemsCarousel" data-slide-to="1"></li>#}
+{#                <li data-target="#itemsCarousel" data-slide-to="2"></li>#}
+{#            </ol>#}
+{##}
+{#            <div class="carousel-inner">#}
+{##}
+{#                <div class="item {% if forloop.first %} active{% endif %}">#}
+{#                    {% for item in item_list %}#}
+{#                    <a href="#">{% if item.photo %}<img src="{{ item.photo.url }}" alt="Carousel" class="gocarousel" width="300px"/>{% endif %}</a>#}
+{#                    <div class="carousel-caption">#}
+{#                        <h3>{{ item.name}}</h3>#}
+{#                        <h5>#}
+{#                            <a href="#">{{ item.desc.strip }}</a>#}
+{#                        </h5>#}
+{#                    </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{##}
+{#            <a class="left carousel-control" href="#itemsCarousel" data-slide="prev">#}
+{#                <span class="icon-prev"></span>#}
+{#            </a>#}
+{#            <a class="right carousel-control" href="#itemsCarousel" data-slide="next">#}
+{#                <span class="icon-next"></span>#}
+{#            </a>#}
+{#        </section>#}
+{#    </div>#}
+
+{#    item 회전목마 다시다시#}
+    <section>
+    <div id="demo" class="carousel slide" data-ride="carousel" data-interval="5000" >
+      <!-- Indicators -->
+      <ul class="carousel-indicators row">
+        <li data-target="#demo" data-slide-to="0" class="active" ></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+      </ul>
+
+      <!-- The slideshow -->
+      <div class="carousel-inner">
+        <div class="carousel-item active" align="center">
+          {% for item in item_list %}
+          <img src="{{ item.photo.url }}" alt="">
+              <div class="text-center ">
+                  <h4 class="middle text-wide p-b-2 ">{{ item.name }}</h4>
+                  <h5 >
+                      <a href="#">{{ item.desc.strip }}</a>
+                  </h5>
+                  <h6 >
+                      <a href="#">{{ item.price }}</a> 원
+                  </h6>
+              </div>
+        </div>
+        <div class="carousel-item " align="center">
+          <img src="{{ item.photo.url }}" alt="">
+              <div class="text-center">
+                  <h4 class="middle text-wide p-b-2 ">{{ item.name }}</h4>
+                  <h5 >
+                      <a href="#">{{ item.desc.strip }}</a>
+                  </h5>
+                  <h6 >
+                      <a href="#">{{ item.price }}</a> 원
+                  </h6>
+              </div>
+        </div>
+        <div class="carousel-item " align="center">
+          <img src="{{ item.photo.url }}" alt="">
+             <div class="text-center">
+                  <h4 class="middle text-wide p-b-2 ">{{ item.name }}</h4>
+                  <h5 >
+                      <a href="#">{{ item.desc.strip }}</a>
+                  </h5>
+                  <h6 >
+                      <a href="#">{{ item.price }}</a> 원
+                  </h6>
+            </div>
+          {% endfor %}
+        </div>
+       </div>
+      <!-- Left and right controls -->
+      <a class="carousel-control-prev " href="#demo" role="button" data-slide="prev" >
+        <strong><span class="carousel-control-prev-icon" aria-hidden="true" ></span></strong>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#demo" role="button" data-slide="next">
+        <strong><span class="carousel-control-next-icon" aria-hidden="true"></span></strong>
+        <span class="sr-only">Next</span>
+      </a>
+
+
+    </div>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+</section>
+
+{#        <!-- items 회전목마_fail-->#}
+{#    {% if item_list %}#}
+{#    <div id="carousel" class="carousel slide" data-ride="carousel">#}
+{#        {% if item_list|length > 1 %}#}
+{#        <ol class="carousel-indicators">#}
+{#            {% for item in item_list %}#}
+{#                <li data-target="#carousel" data-slide-to="{{ forloop.counter0 }}"{% if forloop.first %} class="active"{% endif %}></li>#}
+{#            {% endfor %}#}
+{#        </ol>#}
+{#        {% endif %}#}
+{##}
+{#        <div class="carousel-inner" role="listbox">#}
+{#            {% for item in item_list %}#}
+{#                <div class="item{% if forloop.first %} active{% endif %}">#}
+{#                        <a href="#">{% if item.photo %}<img src="{{ item.photo.url }}" alt="Carousel" class="gocarousel"/>{% endif %}</a>#}
+{#                    {% if item_list.caption or item_list.link %}#}
+{#                        <div class="carousel-caption">#}
+{#                            <h3>{{ item_list.caption }}</h3>#}
+{#                            {% if item_list.link %}#}
+{#                            <a href="{{ item_list.link }}" class="btn btn-primary">Open</a>#}
+{#                            {% endif %}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{##}
+{#        {% if item_list|length > 1 %}#}
+{#            <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">#}
+{#                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>#}
+{#                <span class="sr-only">Previous</span>#}
+{#            </a>#}
+{#            <a class="right carousel-control" href="#carousel" role="button" data-slide="next">#}
+{#                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>#}
+{#                <span class="sr-only">Next</span>#}
+{#            </a>#}
+{#        {% endif %}#}
+{##}
+{#    </div>#}
+{#    {% endif %}#}
+
+        <!-- footer -->
+  <div class="py-5 bg-dark">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <h5>HYtrip Web site</h5>
+          <p class="text-muted">한양여자대학교 스마트IT 학과 하이트립</p>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <h5>Boot</h5>
+          <ul class="links list-unstyled">
+            <li> <a href="#" class="text-muted">I like Django</a></li>
+            <li> <a href="#" class="text-muted">So funny</a></li>
+            <li> <a href="#" class="text-muted">Nic</a></li>
+            <li> <a href="#" class="text-muted">Egoiest</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <h5>Strap</h5>
+          <ul class="links list-unstyled">
+            <li> <a href="#" class="text-muted">Swalla</a></li>
+            <li> <a href="#" class="text-muted">Nustella</a></li>
+            <li> <a href="#" class="text-muted">River and rain</a></li>
+            <li> <a href="#" class="text-muted">Midnight in Paris</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

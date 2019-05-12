@@ -1,0 +1,22 @@
+{% extends "main/layout.html" %}
+
+{% block title %}login{% endblock %}
+
+{% block content %}
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <div class="login" style="margin-top: 100px; margin-left: 20px;" >
+        <h1>
+            <a tabindex="-1" title="hytrip" ref="127.0.0.1:8000/">하이트립 로그인</a>
+        </h1>
+        <form role="form" method="post" action="">
+            {% csrf_token %}
+            <table>
+                {{ f.as_table }}
+            </table>
+            <input type="submit" name="submit" value="로그인">
+        </form>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    </div>
+{% endblock %}
